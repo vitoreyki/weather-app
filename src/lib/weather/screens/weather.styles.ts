@@ -44,6 +44,7 @@ export const Bold = styled(Text)`
 `;
 
 export const LocationWrapper = styled(View)`
+  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -71,7 +72,7 @@ export const CityName = styled(Text)`
   font-size: 24px;
   font-weight: 700;
   color: #f9faff;
-  text-align: center;
+  text-align: start;
 `;
 
 export const CountryName = styled(Text)`
@@ -79,7 +80,7 @@ export const CountryName = styled(Text)`
   font-size: 16px;
   font-weight: 400;
   color: #f9faff;
-  text-align: center;
+  text-align: start;
 `;
 
 export const Temperature = styled(Text)`
