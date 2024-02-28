@@ -106,7 +106,7 @@ export const SearchInput = styled(TextInput)`
   width: 90%;
   background-color: #f9faff;
   border-radius: 12px;
-  padding-horizontal: 12px;
+  padding: 12px;
 `;
 
 export const SearchButton = styled(TouchableOpacity)`
