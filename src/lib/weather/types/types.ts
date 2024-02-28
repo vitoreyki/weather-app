@@ -45,3 +45,17 @@ export interface WeatherData {
   location: Location | undefined;
   current: Current | undefined;
 }
+
+export interface Search {
+  id: number;
+  name: string;
+  region: string;
+  country: string;
+  lat: number;
+  lon: number;
+  url: string;
+}
+
+export interface SearchWeather {
+  search: Search[] | undefined;
+}
