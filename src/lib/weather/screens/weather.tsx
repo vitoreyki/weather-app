@@ -157,7 +157,7 @@ export const Weather = (): ReactElement => {
       <CityWrapper>
         <LocationWrapper>
           <SearchLabel>Última pesquisa</SearchLabel>
-          <CityName numberOfLines={1}>{state?.location?.name}</CityName>
+          <CityName numberOfLines={2}>{state?.location?.name}</CityName>
           <CountryName numberOfLines={1}>
             {
               //@ts-ignore
