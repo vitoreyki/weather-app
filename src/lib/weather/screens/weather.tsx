@@ -14,6 +14,11 @@ import {
   NotFindCityWrapper,
   SearchInput,
   SearchLabel,
+  SearchListContainer,
+  SearchListInfoDivider,
+  SearchListInfoLabel,
+  SearchListInfoWrapper,
+  SearchListWrapper,
   SearchWrapper,
   SemiDivider,
   StatusWeather,
@@ -30,37 +35,37 @@ import {
   Wrapper,
 } from './weather.styles';
 // @ts-ignore
-import search from '../../../assets/images/search.png';
-import {weatherDetails, weatherSubInfo} from '../constants/data';
-import {weatherImagePath} from '../constants/weather-images';
-import {getWeatherData} from '../utils/weather-api';
-import {weatherConditions} from '../constants/weather-conditions';
+import {currentWeatherApi, searchWeatherApi} from '../../../constants';
 import {weatherCountries} from '../constants/countries';
+import {weatherDetails, weatherSubInfo} from '../constants/data';
+import {weatherConditions} from '../constants/weather-conditions';
+import {weatherImagePath} from '../constants/weather-images';
+import {Search, SearchWeather} from '../types/types';
+import {getWeatherData} from '../utils/weather-api';
 
 export const Weather = (): ReactElement => {
-  const [city, setCity] = useState('Presidente Prudente');
+  const [city, setCity] = useState('');
   const [state, setState] = useState<any>({});
   const [weatherIconPath, setWeatherIconPath] = useState<string>('day/113.png');
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchOptions, setSearchOptions] = useState<SearchWeather | any>([]);
 
   useEffect(() => {
-    console.log(state);
-
-    getWeather(city);
-
-    console.log(search);
-
+    getWeather('Presidente Prudente');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    searchCityWeather(city);
+  }, [city]);
 
   const getWeather = (city: string) => {
     setIsError(false);
     setIsLoading(true);
-    const apiUrl = `http://api.weatherapi.com/v1/current.json?key=3495909d3601492a9d400039242702&q=${city}&aqi=no`;
 
-    getWeatherData(apiUrl)
+    getWeatherData(currentWeatherApi(city))
       .then(data => {
         setState(data);
         setWeatherIconPath(
@@ -77,6 +82,16 @@ export const Weather = (): ReactElement => {
       });
   };
 
+  const searchCityWeather = (city: string) => {
+    getWeatherData(searchWeatherApi(city))
+      .then(data => {
+        setSearchOptions(data);
+      })
+      .catch(error => {
+        console.error('Failed to fetch data:', error);
+      });
+  };
+
   const renderSearch = () => {
     return (
       <>
@@ -84,12 +99,56 @@ export const Weather = (): ReactElement => {
           Qual cidade você quer <Bold>verificar a temperatura?</Bold>{' '}
         </Title>
         <SearchWrapper>
-          <SearchInput onChangeText={(value: string) => setCity(value)} />
+          <SearchInput
+            value={city}
+            onChangeText={(value: string) => {
+              setCity(value);
+            }}
+          />
           <TouchableOpacity onPress={() => getWeather(city)}>
             <Image source={require('../../../assets/images/search.png')} />
           </TouchableOpacity>
         </SearchWrapper>
       </>
+    );
+  };
+
+  const renderSearchList = () => {
+    return (
+      <>
+        {searchOptions.length !== 0 && (
+          <SearchListContainer>
+            <SearchListWrapper>
+              <FlatList
+                data={searchOptions}
+                renderItem={({item, index}: {item: Search; index: number}) => (
+                  <>
+                    {renderSearchListInfo(item)}
+                    {index !== searchOptions.length - 1 && (
+                      <SearchListInfoDivider />
+                    )}
+                  </>
+                )}
+              />
+            </SearchListWrapper>
+          </SearchListContainer>
+        )}
+      </>
+    );
+  };
+
+  const renderSearchListInfo = (item: Search) => {
+    return (
+      <SearchListInfoWrapper
+        onPress={() => {
+          setSearchOptions([]);
+          setCity('');
+          getWeather(item.name);
+        }}>
+        <SearchListInfoLabel>
+          {item.name}, {item.country}
+        </SearchListInfoLabel>
+      </SearchListInfoWrapper>
     );
   };
 
@@ -100,7 +159,11 @@ export const Weather = (): ReactElement => {
           <SearchLabel>Última pesquisa</SearchLabel>
           <CityName numberOfLines={1}>{state?.location?.name}</CityName>
           <CountryName numberOfLines={1}>
-            {weatherCountries[state?.location?.country]}
+            {
+              //@ts-ignore
+              weatherCountries[state?.location?.country] ??
+                state?.location?.country
+            }
           </CountryName>
         </LocationWrapper>
         <Image source={require('../../../assets/images/pin.png')} />
@@ -118,7 +181,10 @@ export const Weather = (): ReactElement => {
         />
         <Temperature>{state?.current?.temp_c + 'º'}</Temperature>
         <StatusWeather>
-          {weatherConditions[state?.current?.condition?.text]}
+          {
+            // @ts-ignore
+            weatherConditions[state?.current?.condition?.text]
+          }
         </StatusWeather>
       </TemperatureWrapper>
     );
@@ -188,6 +254,7 @@ export const Weather = (): ReactElement => {
       <SafeAreaView style={{flex: 1}}>
         <Container>
           <Wrapper>{renderSearch()}</Wrapper>
+          {renderSearchList()}
           {isLoading ? (
             <Loading animating={isLoading} />
           ) : (

@@ -31,14 +31,14 @@ export const Loading = styled(ActivityIndicator).attrs({
 
 export const Title = styled(Text)`
   font-family: Montserrat;
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 500;
   color: #f9faff;
 `;
 
 export const Bold = styled(Text)`
   font-family: Montserrat;
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 900;
   color: #f9faff;
 `;
@@ -119,17 +119,65 @@ export const SearchButton = styled(TouchableOpacity)`
   border-radius: 8px;
 `;
 
+export const SearchListContainer = styled(View)`
+  width: 100%;
+  padding: 0 20px;
+  margin-top: -4%;
+`;
+
+export const SearchListWrapper = styled(ScrollView)`
+  width: 100%;
+  display: flex;
+  background-color: #cacfd4;
+  flex-direction: column;
+  padding: 10px 20px;
+  border-radius: 20px;
+`;
+
+export const SearchListInfoWrapper = styled(TouchableOpacity)`
+  display: flex;
+  flex-direction: row;
+  padding: 20px 6px;
+`;
+
+export const SearchListInfoLabel = styled(Text)`
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 400;
+  color: #000000;
+  text-align: center;
+`;
+
+export const SearchListInfoDivider = styled(View)`
+  width: 100%;
+  border: 1px #ffffff;
+  opacity: 0.15;
+`;
+
 export const Divider = styled(View)`
   width: 100%;
   border: 1px #ffffff;
   margin-vertical: 10%;
+  opacity: 0.15;
 `;
 
-export const WeatherInfoWrapper = styled(ScrollView)`
+export const SemiDivider = styled(View)`
+  flex: 1;
+  border: 1px #ffffff;
+  margin-vertical: 10%;
+  opacity: 0.3;
+`;
+
+export const WeatherInfoWrapper = styled(ScrollView).attrs({
+  contentContainerStyle: {
+    paddingBottom: '15%',
+  },
+})`
   padding: 30px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  padding-bottom: 30%;
+  background-color: transparent;
 `;
 
 export const TemperatureWrapper = styled(View)`
@@ -185,7 +233,7 @@ export const WeatherDetailsWrapper = styled(View)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: 15px;
+  gap: 8px;
 `;
 
 export const WeatherDetailsTitle = styled(Text)`
@@ -194,12 +242,6 @@ export const WeatherDetailsTitle = styled(Text)`
   font-weight: 700;
   color: #ffffff;
   text-align: center;
-`;
-
-export const SemiDivider = styled(View)`
-  flex: 1;
-  border: 1px #ffffff;
-  margin-vertical: 10%;
 `;
 
 export const NotFindCityWrapper = styled(View)`
