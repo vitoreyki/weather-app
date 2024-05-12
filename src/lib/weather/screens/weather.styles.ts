@@ -32,14 +32,14 @@ export const Loading = styled(ActivityIndicator).attrs({
 export const Title = styled(Text)`
   font-family: Montserrat;
   font-size: 24px;
-  font-weight: 500;
+  font-weight: 400;
   color: #f9faff;
 `;
 
 export const Bold = styled(Text)`
   font-family: Montserrat;
   font-size: 24px;
-  font-weight: 900;
+  font-weight: 700;
   color: #f9faff;
 `;
 
@@ -84,9 +84,9 @@ export const CountryName = styled(Text)`
 `;
 
 export const Temperature = styled(Text)`
-  font-family: Montserrat;
+  font-family: 'Montserrat';
   font-size: 56px;
-  font-weight: 900;
+  font-weight: 700;
   color: #f9faff;
   text-align: center;
 `;
